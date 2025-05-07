@@ -24,7 +24,7 @@ var cursors;
 var score = 0;
 var scoreText;
 var gameOver = false;
-var activeBomb = null; // Track the bomb that follows the player
+var activeBomb = null;
 var restartButton;
 
 var game = new Phaser.Game(config);
@@ -68,18 +68,18 @@ function create () {
     platform6.body.setSize(480, 50);
     platform6.body.setOffset(3, 90);
 
-    // Player
+    // Playerrrrrrrrrrrrrrrrrr
     player = this.physics.add.sprite(960, 500, 'dude');
     player.setBounce(0);
     player.setCollideWorldBounds(true);
 
-    player.body.setSize(30, 50);   // Collision size
-    player.body.setOffset(45, 30);  // Collision offset
+    player.body.setSize(30, 50); 
+    player.body.setOffset(45, 30); 
 
-    // Input
+
     cursors = this.input.keyboard.createCursorKeys();
 
-    // Stars
+    // Starrrrsssssssssss
     stars = this.physics.add.group({
         key: 'star',
         repeat: 11,
@@ -90,42 +90,40 @@ function create () {
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
     });
 
-    // Bombs
+    // Bombbbbssssssssssssss
     bombs = this.physics.add.group();
 
-    // Score text
     scoreText = this.add.text(16, 16, 'Score: 0', {
         fontSize: '32px',
         fill: '#ffffff'
     });
 
-    // Colliders
+
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(stars, platforms);
     this.physics.add.collider(bombs, platforms);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-    // Overlap
+
     this.physics.add.overlap(player, stars, collectStar, null, this);
 
-    // Restart Button (text only)
+   
     restartButton = this.add.text(960, 540, 'Restart', {
         fontSize: '48px',
         fill: '#ffffff',
-        stroke: '#000000', // Black border
+        stroke: '#000000',
         strokeThickness: 6,
         align: 'center'
     }).setOrigin(0.5).setInteractive();
 
     restartButton.on('pointerdown', restartGame, this);
     restartButton.on('pointerover', function () {
-        restartButton.setStyle({ fill: '#ff0000' }); // Red text on hover
+        restartButton.setStyle({ fill: '#ff0000' }); 
     });
     restartButton.on('pointerout', function () {
-        restartButton.setStyle({ fill: '#ffffff' }); // White text when not hovering
+        restartButton.setStyle({ fill: '#ffffff' }); 
     });
 
-    // Hide the button initially
     restartButton.setVisible(false);
 }
 
@@ -146,7 +144,7 @@ function update () {
         player.setVelocityY(-1100);
     }
 
-    // Make all bombs follow the player
+
     bombs.children.iterate(function (bomb) {
         if (bomb.active) {
             const speed = 200;
@@ -189,28 +187,28 @@ function hitBomb (player, bomb) {
     player.setTint(0xff0000);
     gameOver = true;
 
-    // Show restart button when the game is over
+
     restartButton.setVisible(true);
 }
 
 function restartGame() {
-    // Reset the game state
+
     gameOver = false;
     score = 0;
     scoreText.setText('Score: 0');
 
-    // Reset player position and physics
+
     player.setTint(0xffffff);
     player.setPosition(960, 500);
     this.physics.resume();
 
-    // Hide restart button
+ 
     restartButton.setVisible(false);
 
-    // Reset bombs and stars
+ 
     bombs.clear(true, true);
     stars.clear(true, true);
     
-    // Call create to reinitialize game objects
+
     create.call(this);
 }
